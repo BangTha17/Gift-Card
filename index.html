@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For My Lovely Sister — Nailong Special Letter 💛</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&family=Playfair+Display:ital,wght=0,400;0,600;1,400&family=Caveat:wght=600&display=swap");
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        overflow-x: hidden;
+      }
+      .serif-font {
+        font-family: "Playfair Display", serif;
+      }
+      .handwriting {
+        font-family: "Caveat", cursive;
+      }
+
+      /* --- CSS 3D ENVELOPE EFFECT --- */
+      .envelope-wrapper {
+        position: relative;
+        width: 280px;
+        height: 180px;
+        background-color: #fff2b2;
+        box-shadow: 0 30px 60px -12px rgba(218, 165, 32, 0.25);
+        border-radius: 0 0 16px 16px;
+        cursor: pointer;
+        transition: all 0.5s ease;
+        border: 2px solid #ffde4d;
+      }
+      .envelope-wrapper::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 138px solid transparent;
+        border-right: 138px solid transparent;
+        border-top: 100px solid #ffde4d;
+        transform-origin: top;
+        transition:
+          transform 0.4s ease 0.2s,
+          z-index 0.1s ease 0.2s;
+        z-index: 4;
+      }
+      .envelope-flap-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 138px solid #ffeaa7;
+        border-right: 138px solid #ffeaa7;
+        border-bottom: 95px solid #ffd369;
+        border-radius: 0 0 14px 14px;
+        z-index: 3;
+      }
+      .envelope-container:hover .envelope-wrapper {
+        transform: translateY(-10px);
+        box-shadow: 0 40px 70px -10px rgba(255, 178, 0, 0.35);
+      }
+      .envelope-wrapper.open::before {
+        transform: rotateX(180deg);
+        z-index: 1;
+      }
+      .envelope-wrapper.open .letter-preview {
+        transform: translateY(-80px);
+        z-index: 2;
+      }
+
+      /* Animasi Nailong Melayang */
+      @keyframes nailongFloat {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-12px) scale(1.02);
+        }
+      }
+      .nailong-float {
+        animation: nailongFloat 3s ease-in-out infinite;
+      }
+
+      /* Animasi Kursor Blinking Teks Typewriter */
+      .typed-cursor {
+        opacity: 1;
+        animation: blink 0.7s infinite;
+        color: #ffb200;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-[#FFFDF6] min-h-screen text-slate-800 antialiased selection:bg-amber-200"
+  >
+    <div
+      id="introScreen"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center p-6 bg-[#FFFBEB] transition-all duration-700 ease-in-out"
+    >
+      <div class="nailong-float mb-4 flex flex-col items-center">
+        <img
+          src="logo.png"
+          alt="Nailong Logo"
+          class="w-28 h-28 object-contain"
+        />
+
+        <div
+          class="bg-white px-4 py-1.5 rounded-full text-xs font-bold text-amber-500 shadow-xs border border-amber-100 mt-2 relative after:content-[''] after:absolute after:-top-2 after:left-1/2 after:-translate-x-1/2 after:border-8 after:border-transparent after:border-b-white"
+        >
+          Ada surat gembira buat kamu! 💛
+        </div>
+      </div>
+
+      <div class="text-center space-y-2 mb-10 max-w-sm">
+        <h2 class="serif-font text-2xl font-bold text-amber-900">
+          Spesial Dari Bocilmu
+        </h2>
+        <p class="text-xs text-amber-700/60">
+          Klik amplop kuning di bawah untuk membuka cerita
+        </p>
+      </div>
+
+      <div class="envelope-container flex items-center justify-center h-52">
+        <div id="envelope" class="envelope-wrapper">
+          <div
+            class="letter-preview absolute top-3 left-4 right-4 bg-white h-28 rounded-lg p-3 shadow-inner transition-transform duration-500 z-2 flex flex-col justify-between border border-amber-50"
+          >
+            <div class="space-y-1">
+              <div class="h-2 w-12 bg-amber-400 rounded-xs"></div>
+              <div class="h-1.5 w-full bg-amber-50/50 rounded-xs"></div>
+              <div class="h-1.5 w-5/6 bg-amber-50/50 rounded-xs"></div>
+            </div>
+            <p class="handwriting text-amber-500 text-right text-xs font-bold">
+              Buka Yuk! ✨
+            </p>
+          </div>
+          <div class="envelope-flap-bottom"></div>
+          <div
+            id="waxSeal"
+            class="absolute top-[80px] left-[120px] w-10 h-10 bg-[#FFB200] rounded-full flex items-center justify-center text-white text-base shadow-md z-10 border-2 border-white"
+          >
+            💛
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="mainContent"
+      class="hidden opacity-0 transform translate-y-16 transition-all duration-700 ease-out max-w-5xl w-full mx-auto px-4 py-12 md:py-24 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start relative"
+    >
+      <main
+        class="lg:col-span-7 bg-white p-6 md:p-12 rounded-3xl shadow-[0_20px_50px_rgba(255,178,0,0.05)] border border-amber-100/70 relative overflow-visible"
+      >
+        <button
+          id="closeLetterBtn"
+          class="absolute top-6 right-6 px-3 py-1.5 bg-amber-50 hover:bg-[#FFDE4D] hover:text-slate-900 rounded-xl text-xs font-semibold tracking-wide text-amber-800 transition-colors duration-300 flex items-center gap-1.5 cursor-pointer border border-amber-100"
+        >
+          <i class="fa-solid fa-turn-up -rotate-90"></i> Lipat surat kembali
+        </button>
+
+        <img
+          src="nailong1.png"
+          alt="Nailong 1"
+          class="absolute -top-10 -left-4 w-16 h-16 object-contain transform -rotate-12 pointer-events-none drop-shadow-md z-10"
+        />
+
+        <header class="border-b border-amber-100 pb-5 mb-8 mt-6">
+          <div class="mb-2">
+            <span
+              class="text-[10px] font-bold tracking-widest uppercase text-amber-600 bg-amber-100/50 px-2.5 py-0.5 rounded-md"
+              >Our Memories Story</span
+            >
+          </div>
+
+          <h1
+            class="serif-font text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 leading-tight block min-h-[1.2em]"
+          >
+            <span id="typewriterTarget" class="inline-block"></span
+            ><span class="typed-cursor">|</span>
+          </h1>
+          <p class="text-xs text-slate-400 mt-2 italic">
+            Diarsipkan pada Juni 2026 • Bersama Keceriaan Nailong 💛
+          </p>
+        </header>
+
+        <div
+          class="serif-font text-base md:text-lg text-slate-700 space-y-6 leading-relaxed tracking-wide text-justify relative"
+        >
+          <img
+            src="nailong2.png"
+            alt="Nailong 2 Background"
+            class="absolute inset-0 m-auto w-64 h-64 object-contain opacity-5 pointer-events-none select-none"
+          />
+
+          <p>
+            Halo kakak Alanna.. yang lahir pada tanggal 9 Januari 1999. Nama
+            yang indah dengan tanggal lahir yang cantik. Aku buatkan karangan
+            indah ini hanya untukmu, dan meminta waktu ke depan untuk
+            membacanya.
+          </p>
+          <p>
+            Kak.. Sejujurnya, aku hanya sebuah permata kecil yang sudah hancur
+            berkeping-keping. Diperbaiki lagi dan lagi tapi kembali hancur lagi.
+            Hingga kalimat "layak untuk tidak hidup" muncul dibenakku sendiri.
+            Aku tidak punya "rumah" saat itu, tidak ada tempat untuk meluapkan
+            isi di dalam diriku hingga menjadi tumpukan jerami. Memenjarakan
+            diriku di sebuah ruangan kosong dan sunyi dengan tubuh yang
+            meringkuk memeluk kakiku sendiri. Luka ku terus membekas disekujur
+            lengan dan pahaku.
+          </p>
+
+          <div
+            class="my-8 flex flex-col md:flex-row items-center gap-4 bg-amber-50/40 p-5 rounded-2xl border border-amber-100/50 relative overflow-visible"
+          >
+            <blockquote
+              class="serif-font italic text-slate-900 font-medium flex-1"
+            >
+              "Membuat sebuah tempat "rumah" sangat sulit untukku. Lelah
+              memasang dan melepas topeng di setiap harinya, hingga aku merasa
+              tidak sanggup dalam keadaan seperti itu. Nangisku tertahan,
+              menggantung di langit-langit, menatap kekosongan yang tidak ada
+              ujungnya."
+            </blockquote>
+            <img
+              src="nailong3.png"
+              alt="Nailong 3"
+              class="w-16 h-16 object-contain"
+            />
+          </div>
+
+          <p>
+            Sampai saat ini.. "Rumah" ini terbentuk dengan sendirinya,
+            perlahan-lahan terisi oleh orang-orang yang aku sayangi, sekaligus
+            mereka yang paling aku takutkan untuk kehilangan, termasuk kakak.
+            Perempuan dengan senyum khas yang tidak lahir dari kemudahan,
+            melainkan dari kekuatan yang dibangun sendiri setelah melewati
+            berbagai masalah tanpa bergantung pada siapa pun. Bahkan saat kakak
+            kehilangan arah dan kasih sayang yang seharusnya menjadi tempatnya
+            pulang.
+          </p>
+          <p>
+            Terima kasih.. Sudah hadir, mengisi ruang-ruang yang kosong, dan
+            mematahkan kalimat-kalimatku yang selama ini menggantung di
+            langit-langit abu-abuku. Menemani dan menyayangiku dengan cara yang
+            selama ini tidak pernah benar-benar didapatkan dari orang-orang yang
+            hadir dalam tiap menit, jam, dan keseharianku. Menuntunku dan
+            memberiku arah saat aku tidak tau harus melangkah dan mengambil
+            keputusan ke mana.
+          </p>
+          <p>
+            Aku sangat bersyukur. Entah doa mana yang Allah dengar dan kabulkan,
+            hingga akhirnya mempertemukanku dengan Kakak. Di antara begitu
+            banyak hal yang pernah kupanjatkan dalam doa, mungkin Allah
+            menjawabnya dengan menghadirkan seseorang yang tidak pernah kusangka
+            akan begitu berarti. Jika "rumah" itu tidak pernah hadir dalam
+            hidupku, mungkin sampai hari ini aku menyesali perbuatanku telah
+            menyia-nyiakan kesempatan yang Allah kasih untukku di dunia ini.
+          </p>
+          <p>
+            Tetap jadi Kakakku yang kuat, tegas, dan penuh kasih sayang untuk
+            adikmu yang kecil dan mungil ini. Sebanyak apa pun aku bertemu
+            dengan orang-orang yang mirip denganmu di sekelilingku, tidak akan
+            pernah ada yang bisa menggantikan posisimu sebagai kakak
+            perempuanku.
+          </p>
+
+           <div
+            class="my-8 flex flex-col md:flex-row items-center gap-4 bg-amber-50/40 p-5 rounded-2xl border border-amber-100/50 relative overflow-visible"
+          >
+          <blockquote
+            class="serif-font italic text-slate-900 font-medium flex-1"
+          >
+            Note: Tetap bawa ya boneka matahari (nailong) yang pernah aku
+            berikan ke Jogja. Kalau suatu hari aku tidak memberi kabar dan kakak
+            merindukanku, peluklah matahari kecil itu. Anggap saja ada sedikit
+            bagian dariku yang tetap menemanimu, meski aku tidak berada di
+            dekatmu.
+          </blockquote>
+           </div>
+        </div>
+
+        <div
+          class="mt-12 pt-6 border-t border-amber-100 flex flex-col items-end relative"
+        >
+          <img
+            src="nailong4.png"
+            alt="Nailong 4"
+            class="absolute -top-10 left-0 w-16 h-16 object-contain pointer-events-none"
+          />
+
+          <span class="text-xs text-amber-600/70 italic"
+            >Kakakku yang gemoy, and Love you my lovely sister.
+          </span>
+          <span class="handwriting text-4xl text-amber-900 mt-2 select-none"
+            >Alanna Diandra</span
+          >
+        </div>
+
+        <div class="mt-12 pt-8 border-t-2 border-dashed border-amber-100">
+          <h4 class="handwriting text-2xl text-amber-800 font-bold mb-4">
+            ✨ It is for you:
+          </h4>
+          <div class="grid grid-cols-1 gap-4">
+            <div class="bg-[#FFFDF6] border border-amber-100 p-2 rounded-xl">
+              <div
+                class="bg-amber-50/40 aspect-[16/10] rounded-lg overflow-hidden flex items-center justify-center text-amber-200 text-2xl"
+              >
+                <img
+                  src="image1.png"
+                  alt="Foto Spesial"
+                  class="w-full h-full object-contain onerror-placeholder"
+                />
+              </div>
+              <p class="text-center text-xs text-amber-700/60 mt-2 italic">
+                Foto Spesial Kita Berdua
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <aside class="lg:col-span-5 space-y-8 relative">
+        <div class="space-y-2">
+          <h3
+            class="serif-font text-2xl text-slate-900 font-bold flex items-center gap-2"
+          >
+            <span class="text-[#FFB200]">💛</span> Visual Memory Lane
+          </h3>
+          <p class="text-xs text-slate-500">
+            Kumpulan serpihan momen berharga kita yang gak boleh ilang.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 relative">
+          <div
+            class="bg-white p-2.5 pb-5 rounded-2xl shadow-xs transform -rotate-2 hover:rotate-0 transition-transform duration-300 border border-amber-100"
+          >
+            <div
+              class="bg-amber-50/50 aspect-[3/4] rounded-xl overflow-hidden flex items-center justify-center text-amber-300 text-3xl"
+            >
+              <img
+                src="image3.jpeg"
+                alt="Memori 1"
+                class="w-full h-full object-contain onerror-placeholder"
+              />
+            </div>
+            <p class="handwriting text-center mt-3 text-amber-900 text-lg">
+              Memories 1 📌
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-2.5 pb-5 rounded-2xl shadow-xs transform rotate-3 hover:rotate-0 transition-transform duration-300 border border-amber-100 self-start"
+          >
+            <div
+              class="bg-amber-50/50 aspect-square rounded-xl overflow-hidden flex items-center justify-center text-amber-300 text-3xl"
+            >
+              <img
+                src="image2.jpeg"
+                alt="Memori 2"
+                class="w-full h-full object-contain onerror-placeholder"
+              />
+            </div>
+            <p class="handwriting text-center mt-3 text-amber-900 text-lg">
+              Memories 2 📌
+            </p>
+          </div>
+
+          <img
+            src="nailong5.png"
+            alt="Nailong 5"
+            class="absolute top-[40%] left-[42%] w-16 h-16 object-contain z-20 drop-shadow-md pointer-events-none transform -translate-x-1/2 -translate-y-1/2"
+          />
+
+          <div
+            class="bg-white p-2.5 pb-5 rounded-2xl shadow-xs transform rotate-1 hover:rotate-0 transition-transform duration-300 border border-amber-100"
+          >
+            <div
+              class="bg-amber-50/50 aspect-square rounded-xl overflow-hidden flex items-center justify-center text-amber-300 text-3xl"
+            >
+              <img
+                src="image4.webp"
+                alt="Memori 3"
+                class="w-full h-full object-contain onerror-placeholder"
+              />
+            </div>
+            <p class="handwriting text-center mt-3 text-amber-900 text-lg">
+              Memories 3 📌
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-2.5 pb-5 rounded-2xl shadow-xs transform -rotate-3 hover:rotate-0 transition-transform duration-300 border border-amber-100"
+          >
+            <div
+              class="bg-amber-50/50 aspect-[3/4] rounded-xl overflow-hidden flex items-center justify-center text-amber-300 text-3xl"
+            >
+              <img
+                src="image5.webp"
+                alt="Memori 4"
+                class="w-full h-full object-contain onerror-placeholder"
+              />
+            </div>
+            <p class="handwriting text-center mt-3 text-amber-900 text-lg">
+              Memories 4 📌
+            </p>
+          </div>
+
+          <div class="col-span-2 flex flex-col items-center pt-4 relative">
+            <img
+              src="nailong6.png"
+              alt="Nailong 6"
+              class="w-24 h-24 object-contain drop-shadow-md"
+            />
+            <div
+              class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mt-2"
+            >
+              More Moments Coming Soon! 🦖
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <script>
+      const envelope = document.getElementById("envelope");
+      const introScreen = document.getElementById("introScreen");
+      const mainContent = document.getElementById("mainContent");
+      const closeLetterBtn = document.getElementById("closeLetterBtn");
+
+      // --- 1. FITUR TYPEWRITER EFFECT ---
+      function runTypewriter() {
+        const target = document.getElementById("typewriterTarget");
+        const text = "Dear, My Lovely Sister. 💛";
+        target.innerHTML = "";
+        let i = 0;
+
+        function type() {
+          if (i < text.length) {
+            target.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, 90);
+          }
+        }
+        type();
+      }
+
+      // --- 2. ANIMASI BUKA SURAT + CELEBRATION ---
+      envelope.addEventListener("click", () => {
+        envelope.classList.add("open");
+
+        setTimeout(() => {
+          introScreen.style.transform = "scale(3)";
+          introScreen.style.opacity = "0";
+          introScreen.style.pointerEvents = "none";
+
+          document.body.style.overflow = "auto";
+
+          setTimeout(() => {
+            introScreen.classList.add("hidden");
+            mainContent.classList.remove("hidden");
+
+            setTimeout(() => {
+              mainContent.classList.remove("opacity-0", "translate-y-16");
+
+              // EFEK LEDAKAN CONFETTI
+              confetti({
+                particleCount: 120,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ["#FFDE4D", "#FFB200", "#FFFFFF", "#FFF2B2"],
+              });
+
+              runTypewriter();
+            }, 50);
+          }, 400);
+        }, 800);
+      });
+
+      // --- 3. ANIMASI LIPAT KEMBALI ---
+      closeLetterBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        setTimeout(() => {
+          mainContent.classList.add("opacity-0", "translate-y-16");
+
+          setTimeout(() => {
+            mainContent.classList.add("hidden");
+            introScreen.classList.remove("hidden");
+
+            setTimeout(() => {
+              introScreen.style.transform = "scale(1)";
+              introScreen.style.opacity = "1";
+              introScreen.style.pointerEvents = "auto";
+
+              envelope.classList.remove("open");
+              document.body.style.overflow = "hidden";
+            }, 50);
+          }, 500);
+        }, 400);
+      });
+
+      // Placeholder handler foto error
+      document.querySelectorAll(".onerror-placeholder").forEach((img) => {
+        img.onerror = function () {
+          this.style.display = "none";
+          const parent = this.parentElement;
+          parent.innerHTML = '<i class="fa-regular fa-image"></i>';
+        };
+        if (
+          !img.getAttribute("src") ||
+          (img.getAttribute("src").includes("jpg") && !img.complete)
+        ) {
+          img.dispatchEvent(new Event("error"));
+        }
+      });
+
+      document.body.style.overflow = "hidden";
+    </script>
+  </body>
+</html>
